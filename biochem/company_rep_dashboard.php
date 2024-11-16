@@ -333,6 +333,10 @@ $counts = $counts_query->get_result()->fetch_assoc();
                         <input type="text" name="contact_number" required>
                     </div>
                     <div class="form-group">
+                        <label>Birthday</label>
+                        <input type="date" name="birthday" required>
+                    </div>
+                    <div class="form-group">
                         <label>Address</label>
                         <textarea name="address" required></textarea>
                     </div>
@@ -356,7 +360,8 @@ $counts = $counts_query->get_result()->fetch_assoc();
                             <input type="text" name="employees[0][first_name]" placeholder="First Name" required>
                             <input type="text" name="employees[0][last_name]" placeholder="Last Name" required>
                             <input type="email" name="employees[0][email]" placeholder="Email" required>
-                            <input type="text" name="employees[0][contact_number]" placeholder="Contact" required>
+                            <input type="text" name="employees[0][contact_number]" placeholder="Contact Number" required>
+                            <input type="date" name="employees[0][birthday]" required>
                             <textarea name="employees[0][address]" placeholder="Address" required></textarea>
                             <button type="button" class="remove-row" style="display:none;">&times;</button>
                         </div>
