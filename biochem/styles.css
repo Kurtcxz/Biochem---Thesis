@@ -1,0 +1,280 @@
+/* styles.css */
+
+:root {
+  --primary-blue: #00A0E3;
+  --primary-green: #8DC63F;
+  --text-gray: #58595B;
+  --background-color: #f0f2f5;
+  --card-background: #ffffff;
+  --text-color: #333333;
+  --header-bg: #333333;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  background-color: var(--header-bg);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 60px;
+}
+
+.logo {
+  max-height: 40px;
+  width: auto;
+}
+
+#toggle-sidebar {
+  background-color: transparent;
+  color: white;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: var(--card-background);
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  transition: all 0.3s ease;
+  z-index: 900;
+  overflow-y: auto;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.sidebar nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar nav li {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.sidebar a {
+  color: var(--text-gray);
+  text-decoration: none;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.sidebar a:hover {
+  background-color: var(--primary-blue);
+  color: white;
+}
+
+.sidebar a i {
+  margin-right: 15px;
+  width: 20px;
+  text-align: center;
+}
+
+.sidebar.collapsed a {
+  justify-content: center;
+}
+
+.sidebar.collapsed a i {
+  margin-right: 0;
+}
+
+.sidebar.collapsed .nav-text {
+  display: none;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 80px 20px 60px;
+  margin-left: 250px;
+  transition: all 0.3s ease;
+}
+
+.main-content.expanded {
+  margin-left: 60px;
+}
+
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2em;
+  color: var(--primary-blue);
+  margin-bottom: 30px;
+}
+
+.dashboard-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.stat-card {
+  background-color: var(--card-background);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  padding: 20px;
+  flex: 1 1 calc(33.333% - 20px);
+  min-width: 200px;
+  transition: all 0.3s ease;
+  border-top: 4px solid var(--primary-green);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+}
+
+.stat-card h3 {
+  color: var(--primary-green);
+  font-size: 1.1em;
+  margin-bottom: 10px;
+}
+
+.stat-card p {
+  font-size: 2em;
+  font-weight: bold;
+  color: var(--primary-blue);
+  margin: 0;
+}
+
+.footer {
+  background-color: var(--text-gray);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 60px;
+  }
+  
+  .sidebar .nav-text {
+    display: none;
+  }
+  
+  .main-content {
+    margin-left: 60px;
+  }
+  
+  .dashboard-stats {
+    flex-direction: column;
+  }
+  
+  .stat-card {
+    flex: 1 1 100%;
+  }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#addEmployeeForm input,
+#addEmployeeForm select,
+#bulkUploadForm input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+#addEmployeeForm button,
+#bulkUploadForm button {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+#addEmployeeForm button:hover,
+#bulkUploadForm button:hover {
+    opacity: 0.8;
+}
+
+#sendEmployeesSection {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+#employeeList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#employeeList li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+#employeeList li:last-child {
+    border-bottom: none;
+}
