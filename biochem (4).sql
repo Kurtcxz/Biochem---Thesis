@@ -422,7 +422,8 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `role` enum('admin','marketing_manager','front_desk','junior_medtech','senior_medtech','invoice_manager','company_rep') NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `company_id` int(11) DEFAULT NULL
+  `company_id` int(11) DEFAULT NULL,
+  `status` enum('active','inactive','archived') NOT NULL DEFAULT 'inactive'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -439,7 +440,6 @@ INSERT INTO `users` (`id`, `first_name`, `last_name`, `birthday`, `email`, `cont
 (7, 'Denzel Aivan', 'Palo', NULL, 'sti123@angeles.sti.edu.ph', '', '12558 Sampaloc Street Dau-Homesite', 'rep3', '$2y$10$cix8K/Rda.UiMEza4OqRLO8qyUFOT.kahkgaEkxDoBGgmdaYaYZG.', 'company_rep', '2024-11-11 02:25:05', 3),
 (8, 'james', 'Arthur', '2002-01-01', 'ad@gmail.com', '09053031833', '12558 Sampaloc Street Dau-Homesite', 'mm2', '$2y$10$Hik4kahJ4xtCHBXWdaJY6uIiRdqje.I6I42sodKKawRmIG3D./4w6', 'marketing_manager', '2024-11-11 04:06:01', NULL),
 (9, 'Donna ', 'Cruz', NULL, 'asas@gmail.com', '09053031833', 'Balibago, Angwlws City', 'aaa', '$2y$10$0VN9PJYN9YDVFsakeCsAeOAFdIFhwZj2g77mO8uyJfMT63XgmpTjm', 'company_rep', '2024-11-11 04:17:58', 5);
-
 -- --------------------------------------------------------
 
 --
