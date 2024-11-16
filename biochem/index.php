@@ -45,6 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Close the statement
     $stmt->close();
+
+    
 }
 
 // Check if there are any users in the database
@@ -61,10 +63,44 @@ $user_count = $row['count'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BioChem Services Inc. - EHR Management System</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+
+    .containermt-5 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 100px;
+        text-align: center;
+        margin-left: 650px;
+        margin-right: 650px;
+        background-color: #EBEBEB;
+        padding-top: 30px;
+        padding-bottom: 20px;
+        border-radius: 20px;
+    }
+
+    .containermt-5 img {
+        max-width: 400px;
+        height: auto;
+        margin-bottom: 20px; /* Adds space between the image and the form */
+    }
+
+    .containermt-5 .btn {
+        margin-top: 10px; /* Adds space between form and button */
+    }
+    #username {
+        width: 400px;
+    }
+    button {
+        width: 200px;
+    }
+
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Welcome to Electronic Health Records Management System of BioChem Services Inc.</h1>
+    <div class="containermt-5">
+       <img src="transLogo.png"/>
 
         <?php if ($user_count == 0): ?>
             <div class="alert alert-info">No users found. Please register an admin account.</div>
