@@ -75,12 +75,24 @@ $total_companies = $conn->query("SELECT COUNT(*) as count FROM companies")->fetc
         }
         .content {
             padding: 100px;
-            background-color: #f4f4f4;
+            background-color: #f9f9f9;
             flex-grow: 2;
             margin-left: 320px;
             height: 1000px;
         }
-        
+        .card{
+            width: 350px;
+            height: 250px;
+            border-radius: 10%;
+            margin-top: 20px;     
+        }
+        .card-title{
+            font-size: 18pt;          
+        }
+        .card-text{
+            font-size: 80pt;
+            color: #46aeff;          
+        }      
        
     </style>
 </head>
@@ -98,45 +110,52 @@ $total_companies = $conn->query("SELECT COUNT(*) as count FROM companies")->fetc
                 <img src="backup.png"/>  Backup Records</a>
                 <a href="restore-records.php">
                 <img src="restore.png"/>  Restore Records</a>
+                <a href="company_rep_management.php">
+                <img src="representatives.png"/>  Manage Company <br> Representatives</a>
                 <a href="logout.php">
                 <img src="logout.png"/>  Logout</a>
             </div>
             
         </div>
         <div class="content">
-            <h1>Welcome, <?php echo $user['first_name'] . ' ' . $user['last_name']; ?></h1>
+            
+            <h1>Welcome,<b> <?php echo $user['first_name'] . ' ' . $user['last_name']; ?></b></h1>
             <div class="row">
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
+                       
                             <h5 class="card-title">Total Employees</h5>
                             <p class="card-text"><?php echo $total_employees; ?></p>
+                            
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
+                        
                             <h5 class="card-title">Pending Invoices</h5>
                             <p class="card-text"><?php echo $pending_invoices; ?></p>
+                            
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
+                            
                             <h5 class="card-title">Registered Companies</h5>
                             <p class="card-text"><?php echo $total_companies; ?></p>
+                            
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
+             
                 <div class="col-md-6">
-                    <a href="company_registration.php" class="btn btn-primary mb-3 ml-2">Company Registration</a>
-                </div>
-                <div class="col-md-6">
-                    <a href="company_rep_management.php" class="btn btn-primary mb-3 ml-2">Manage Company Representatives</a>
+                    
                 </div>
             </div>
         </div>
