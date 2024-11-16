@@ -70,8 +70,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
 }
 
-// Fetch all users
-$result = $conn->query("SELECT * FROM users ORDER BY id DESC");
+// Handle user archiving
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'archive') {
+    $user_id = $_POST['user_id'];
+
+    // Fetch the current status of the user
+    $stmt = $conn->prepare("SELECT status FROM users WHERE id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->bind_result($current_status);
+    $stmt->fetch();
+    $stmt->close();
+
+    // If the user is active or inactive, change status to archived
+    if ($current_status === 'active' || $current_status === 'inactive') {
+        $stmt = $conn->prepare("UPDATE users SET status = 'archived' WHERE id = ?");
+        $stmt->bind_param("i", $user_id);
+        
+        if ($stmt->execute()) {
+            $success_message = "User archived successfully.";
+        } else {
+            $error_message = "Error archiving user. Please try again.";
+        }
+    } 
+}
+
+// Handle user deletion
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete') {
+    $user_id = $_POST['user_id'];
+
+    $stmt = $conn->prepare("DELETE FROM users WHERE id = ?");
+    $stmt->bind_param("i", $user_id);
+    
+    if ($stmt->execute()) {
+        $success_message = "User deleted successfully.";
+    } else {
+        $error_message = "Error deleting user. Please try again.";
+    }
+}
+
+// Fetch users with 'active' or 'inactive' status, ordered by 'id' in ascending order
+$result = $conn->query("SELECT * FROM users WHERE status IN ('active', 'inactive') ORDER BY id ASC");
 $users = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
@@ -81,6 +120,7 @@ $users = $result->fetch_all(MYSQLI_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management</title>
+    <link href="user-management.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         #createUserForm {
@@ -100,7 +140,10 @@ $users = $result->fetch_all(MYSQLI_ASSOC);
             <div class="alert alert-danger"><?php echo $error_message; ?></div>
         <?php endif; ?>
 
-        <button id="showCreateUserForm" class="btn btn-primary mb-3">Create New User</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <button id="showCreateUserForm" class="btn btn-primary mb-3">Create New User</button>
+            <a href="ArchiveUsers.php" id="archiveUser" class="btn btn-primary mb-4">Archive User</a>
+        </div>
 
         <div id="createUserForm">
             <h2>Create User</h2>
@@ -151,7 +194,6 @@ $users = $result->fetch_all(MYSQLI_ASSOC);
                         <option value="junior_medtech">Junior MedTech</option>
                         <option value="senior_medtech">Senior MedTech</option>
                         <option value="invoice_manager">Invoice Manager</option>
-                    
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Create User</button>
@@ -159,34 +201,46 @@ $users = $result->fetch_all(MYSQLI_ASSOC);
         </div>
 
         <h2 class="mt-5">Existing Users</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($users as $user): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?></td>
-                    <td><?php echo htmlspecialchars($user['email']); ?></td>
-                    <td><?php echo htmlspecialchars($user['role']); ?></td>
-                    <td>
-                        <a href="edit_user.php?id=<?php echo $user['id']; ?>" class="btn btn-sm btn-primary">Edit</a>
-                        <form action="" method="POST" class="d-inline">
-                            <input type="hidden" name="action" value="delete">
-                            <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($users as $user): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?></td>
+                            <td><?php echo htmlspecialchars($user['email']); ?></td>
+                            <td><?php echo htmlspecialchars($user['role']); ?></td>
+                            <td><?php echo ucfirst($user['status']); ?></td>
+                            <td>
+                                <!-- Edit Button -->
+                                <a href="edit_user.php?id=<?php echo $user['id']; ?>" class="btn btn-sm btn-primary">Edit</a>
+
+                                <!-- Delete Form -->
+                                <form action="" method="POST" class="d-inline">
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+                                </form>
+
+                                <!-- Archive Form -->
+                                <form action="" method="POST" class="d-inline">
+                                    <input type="hidden" name="action" value="archive">
+                                    <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                    <button type="submit" class="btn btn-sm btn-secondary" onclick="return confirm('Are you sure you want to archive this user?')">Archive</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+
 
     <script>
         document.getElementById('showCreateUserForm').addEventListener('click', function() {
