@@ -10,11 +10,11 @@ try {
             INSERT INTO employees (
                 company_id, first_name, last_name, age, 
                 gender, email, contact_number, address, 
-                status, created_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending_tests', NOW())
+                birthday, status, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending_tests', NOW())
         ");
         
-        $stmt->bind_param("ississss", 
+        $stmt->bind_param("ississsss", 
             $_SESSION['company_id'],
             $employee['first_name'],
             $employee['last_name'],
@@ -22,7 +22,8 @@ try {
             $employee['gender'],
             $employee['email'],
             $employee['contact_number'],
-            $employee['address']
+            $employee['address'],
+            $employee['birthday']
         );
         
         $stmt->execute();
